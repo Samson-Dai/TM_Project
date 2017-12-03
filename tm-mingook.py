@@ -11,36 +11,83 @@ def read_rules(line, rule_num):
     input_symbol_str = line_list[1]#input symbol to determine which state to go to
     new_symbol_str = line_list[3]
     direction_str = line_list[4]
-    for i in range(tm_machine["tape_num"]):
-        tm_machine["rules"][i][init_state][input_symbol_str[i]]= {"state": new_state, "rule_num": rule_num, "output":new_symbol_str[i], "direction":direction_str[i] }#finally, save this rule to a tm_machine with a new_state and rule_num
+    tm_machine["rules"][init_state][input_symbol_str]= {"new_state": new_state, "rule_num": rule_num, "output":new_symbol_str, "direction":direction_str }#finally, save this rule to a tm_machine with a new_state and rule_num
 
-def do_test(line):
-    current_state = start_state  # set current state to the start state which means start from the initial state.
-    for i in range(0, len(line)):
-        letter = line[i]
+def do_test(working_tapes):
+    global tm_machine
+    halt = False  # set a bool for halt the machine
+
+    if len(working_tapes) > tm_machine["max_tape_len"]: # first check tape length
+        halt = True
+        output_msg = "ERROR: Tape length exceeds the maximum."
+    
+    tape_position = [0]*tm_machine["tape_num"] #reset the tape position when a new test starts
+    current_state = tm_machine["start_state"]  # set current state to the start state which means start from the initial state.
+    step_counter = 1
+    output_msg = "" 
+    
+    while not halt:
+        if current_state == tm_machine["accepting_state"]:
+            output_msg = "Accepted"
+            halt = True
+            break
+        elif current_state== tm_machine["rejected_state"]:
+            output_msg = "Rejected"
+            halt = True
+            break
+
         init_state = current_state
+        input_symbol_str = ""
+        for i in range(tm_machine["tape_num"]):  #get the imput string
+            #print("Current postion " + str(i))
+            if (tape_position[i] >= len(working_tapes[i])): #if go over the tape length, we get blank
+                input_symbol_str = input_symbol_str + "_"
+                #print("Overflow, input is " + input_symbol_str)
+            else:
+                if (not(working_tapes[i][tape_position[i]]=="_" or working_tapes[i][tape_position[i]]=="*" or working_tapes[i][tape_position[i]] in tm_machine["tape_alphabet"][i])):#if input symbols are not in alphabet then prints invalid error
+                    halt = True
+                    print("Symbol " + working_tapes[i][tape_position[i]] + " is invalid")
+                    output_msg = "ERROR: Steps exceed the maximum."
+                    break
+                else:
+                    #print("Add symbol " + working_tapes[i][tape_position[i]])
+                    input_symbol_str = input_symbol_str + working_tapes[i][tape_position[i]]
 
-        if (letter not in alphabet):#if input symbols are not in alphabet then prints invalid error
-            print("Invalid Input")
-            current_state = rejected_state[0]#this is done because this state should not be an accepting state and therefore we mark it as a rejected state so that it does not print out accepted despite if the state is the accepted state.
-            break;
+        #print("Input is " + input_symbol_str)
+        if (input_symbol_str not in tm_machine["rules"][init_state]): # no rule, reject 
+            halt = True
+            output_msg = "Rejected"
+            break
+            
+        result = tm_machine["rules"][current_state][input_symbol_str]
+        #print("Result is " + str(result))
+        #print("Current working_tapes: " + str(working_tapes))
+        index_str = ''.join(str(e) for e in tape_position)
+        for i in range(tm_machine["tape_num"]): #update the tapes and the position
+            if (tape_position[i]>=len(working_tapes[i])):
+                working_tapes[i].append(result["output"][i])
+            else:
+                working_tapes[i][tape_position[i]] = result["output"][i]
+            current_state = result["new_state"]
+            if result["direction"][i] == "R":
+                tape_position[i] +=1
+            elif result["direction"][i] == "L":
+                tape_position[i] -=1
+            if tape_position[i]<0:
+                tape_position[i] =0
 
+        if not halt:
+            print(str(step_counter) + "," + str(result["rule_num"])+","+','.join(str(e) for e in tape_position)+","+init_state+","+','.join(list(input_symbol_str))+","+current_state+","+','.join(list(result["output"]))+","+','.join(list(result["direction"]))) 
 
-        if (letter not in tm_machine[current_state]):#if there is not input symbol, letter, then it prints out current state does not have the input symbol to proceed.
-            print("No rule for state " + str(current_state) + " with input "+ str(letter))
-            current_state = rejected_state[0]##this is done because this state should not be an accepting state and therefore we mark it as a rejected state so that it does not print out accepted despite if the state is the accepted state.
-            break;
-        
-        #after checking each of different symbols with states, we finally proceed with our logic
-        new_state = tm_machine[current_state][letter][0]#save the new state with current input argument: current_state and input symbol
-        rule_num = tm_machine[current_state][letter][1]#save the rule number with current input argument: current state and input symbol
-        print(str(i+1)+","+str(rule_num)+","+str(init_state)+","+str(letter)+","+str(new_state))
-        current_state = new_state #update current state
+        step_counter += 1
+        if step_counter > tm_machine["max_steps"]:
+            halt = True
+            output_msg = "ERROR: Steps exceed the maximum."
 
-    if current_state in accepting_state:#check if the current state is the accepting state
-        print("Accepted\n")
-    else:#if not, print rejected
-        print("Rejected\n")
+    print(output_msg)
+    for i in range(tm_machine["tape_num"]):
+        print("Tape " +str(i)+": "+ ''.join(working_tapes[i]))
+
     
 
 #different varibles(easily recognizable by their names, and nothing tricky)
@@ -55,20 +102,18 @@ tm_machine = {
     "start_state" : "",
     "accepting_state" : "",
     "rejected_state" : "",
-    "current_state" :"",
-    "tape_position" : 0,
-    "rules" : []
+    "rules" : {}
 }
 
-original_tape=[]
-working_tape=[]
+original_tapes=[]
+test_caese = []
 
 #taking the file argument which is the rules for the machine.
 tm_file = sys.argv[1]
 #testing bunch of inputs for the machine
-#tape_file = sys.argv[2]
+tape_file = sys.argv[2]
 tm = open(tm_file, "r")#opening the rule file
-#test = open(tape_file, "r")#opening the test file
+test = open(tape_file, "r")#opening the test file
 
 try:  #read from the tm definition and construct the machine, print the information at the same time
     for i, line in enumerate(tm):
@@ -85,13 +130,10 @@ try:  #read from the tm definition and construct the machine, print the informat
             states = line.split(',')
             tm_machine["states"] = states
             #here, we save different states into tm_machine[state]
-            for j in range(tm_machine["tape_num"]):
-                tm_machine["rules"].append({})
-                for state in states:
-                    tm_machine["rules"][j][state] = {}
+            for state in states:
+                tm_machine["rules"][state] = {}
         elif i == 3:#define the start state
             tm_machine["start_state"] = line
-            tm_machine["current_state"] = line
         elif i ==4:#define the accepting state and call other states as rejected states
             temp_states = line.split(',')
             tm_machine["accepting_state"] = temp_states[0]
@@ -99,19 +141,28 @@ try:  #read from the tm definition and construct the machine, print the informat
         elif (i>=5 and i<(5+(tm_machine["tape_num"]))): #read to the original tape and set up the working tape  
             tm_machine["tape_alphabet"].append(line.split(','))
         else:#these are different cases of rules and we read the rule in function called, "read_rules"
-            #print("Rule "+ str(i-4-tm_machine["tape_num"]) +" : "+ line)
             read_rules(line, i-4-tm_machine["tape_num"])
 
-    """
-    for line in test: #read from the test file and do the test
+    test_num = 0
+    #print("Test Case " + str(test_num))
+    for i, line in enumerate(test): #read from the test file k lines a time, k is the num of tapes, and do the test
+        if (i)%tm_machine["tape_num"] == 0 and i!=0:  #A testcase end, renew the tapes and do test
+            working_tapes = original_tapes
+            test_caese.append(original_tapes)
+            do_test(working_tapes)
+            test_num += 1
+            #print("Test Case " + str(test_num))
+            original_tapes = []
         line = line.rstrip()
-        print("String : " + line)
-        do_test(line)
-    """
+        print("Tape " + str(i%tm_machine["tape_num"]) +": " + line)
+        original_tapes.append(list(line))
+    working_tapes = original_tapes  # need to do the last one by ourselves
+    do_test(working_tapes)
+    
 
 except:
     print "Cannot read the file"
 finally:
-    print(str(tm_machine))
+    #print(tm_machine)
     tm.close()#finally close the tm which is opened the rule file
-    #test.close()#close the test file
+    test.close()#close the test file
