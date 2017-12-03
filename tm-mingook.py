@@ -5,6 +5,7 @@ from copy import deepcopy
 #this function reads rules and rule number to state what each rule does.
 def read_rules(line, rule_num):
     global tm_machine#we have to save each rule in tm machine therefore take in global tm_machine variable
+    print("Rule " + str(rule_num)+": "+line)
     line_list = line.split(',')
     init_state = line_list[0]#first is the initial state
     new_state = line_list[2]#new state after take in the symbol
