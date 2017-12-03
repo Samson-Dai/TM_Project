@@ -45,7 +45,7 @@ def do_test(working_tapes):
                 input_symbol_str = input_symbol_str + "_"
                 #print("Overflow, input is " + input_symbol_str)
             else:
-                if (not(working_tapes[i][tape_position[i]]=="_" or working_tapes[i][tape_position[i]]=="*" or working_tapes[i][tape_position[i]] in tm_machine["tape_alphabet"][i])):#if input symbols are not in alphabet then prints invalid error
+                if (not(working_tapes[i][tape_position[i]]=="_" or working_tapes[i][tape_position[i]] in tm_machine["tape_alphabet"][i])):#if input symbols are not in alphabet then prints invalid error
                     halt = True
                     print("Symbol " + working_tapes[i][tape_position[i]] + " is invalid")
                     output_msg = "ERROR: Steps exceed the maximum."
@@ -61,11 +61,14 @@ def do_test(working_tapes):
             break
             
         result = tm_machine["rules"][current_state][input_symbol_str]
+        init_tape_position = tape_position
         #print("Result is " + str(result))
         #print("Current working_tapes: " + str(working_tapes))
         index_str = ''.join(str(e) for e in tape_position)
         for i in range(tm_machine["tape_num"]): #update the tapes and the position
-            if (tape_position[i]>=len(working_tapes[i])):
+            if result["output"][i] == "*":
+                pass
+            elif (tape_position[i]>=len(working_tapes[i])):
                 working_tapes[i].append(result["output"][i])
             else:
                 working_tapes[i][tape_position[i]] = result["output"][i]
@@ -78,7 +81,7 @@ def do_test(working_tapes):
                 tape_position[i] =0
 
         if not halt:
-            print(str(step_counter) + "," + str(result["rule_num"])+","+','.join(str(e) for e in tape_position)+","+init_state+","+','.join(list(input_symbol_str))+","+current_state+","+','.join(list(result["output"]))+","+','.join(list(result["direction"]))) 
+            print(str(step_counter) + "," + str(result["rule_num"])+","+','.join(str(e) for e in init_tape_position)+","+init_state+","+','.join(list(input_symbol_str))+","+current_state+","+','.join(list(result["output"]))+","+','.join(list(result["direction"]))) 
 
         step_counter += 1
         if step_counter > tm_machine["max_steps"]:
