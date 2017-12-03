@@ -145,6 +145,7 @@ try:  #read from the tm definition and construct the machine, print the informat
             read_rules(line, i-4-tm_machine["tape_num"])
 
     test_num = 0
+    print(tape_file) #print the tape file
     #print("Test Case " + str(test_num))
     for i, line in enumerate(test): #read from the test file k lines a time, k is the num of tapes, and do the test
         if (i)%tm_machine["tape_num"] == 0 and i!=0:  #A testcase end, renew the tapes and do test
