@@ -1,4 +1,4 @@
-TM1-jgam machine
+TMjgam,1,100,1000
 a,b
 q0,q1,q2,q3,q4,q5,q6
 q0
