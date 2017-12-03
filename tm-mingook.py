@@ -7,11 +7,12 @@ def read_rules(line, rule_num):
     global tm_machine#we have to save each rule in tm machine therefore take in global tm_machine variable
     line_list = line.split(',')
     init_state = line_list[0]#first is the initial state
-    input_symbol = line_list[1]#input symbol to determine which state to go to
     new_state = line_list[2]#new state after take in the symbol
-    new_symbol = line_list[3]
-    direction = line_list[4]
-    tm_machine["rules"][init_state][input_symbol]= {"state": new_state, "rule_num": rule_num, "output":new_symbol, "move":direction }#finally, save this rule to a tm_machine with a new_state and rule_num
+    input_symbol_str = line_list[1]#input symbol to determine which state to go to
+    new_symbol_str = line_list[3]
+    direction_str = line_list[4]
+    for i in range(tm_machine["tape_num"]):
+        tm_machine["rules"][i][init_state][input_symbol_str[i]]= {"state": new_state, "rule_num": rule_num, "output":new_symbol_str[i], "direction":direction_str[i] }#finally, save this rule to a tm_machine with a new_state and rule_num
 
 def do_test(line):
     current_state = start_state  # set current state to the start state which means start from the initial state.
@@ -56,7 +57,7 @@ tm_machine = {
     "rejected_state" : "",
     "current_state" :"",
     "tape_position" : 0,
-    "rules" : {}
+    "rules" : []
 }
 
 original_tape=[]
@@ -83,8 +84,11 @@ try:  #read from the tm definition and construct the machine, print the informat
         elif i ==2:#defines the states
             states = line.split(',')
             tm_machine["states"] = states
-            for state in states:#here, we save different states into tm_machine[state]
-                tm_machine["rules"][state] = {}
+            #here, we save different states into tm_machine[state]
+            for j in range(tm_machine["tape_num"]):
+                tm_machine["rules"].append({})
+                for state in states:
+                    tm_machine["rules"][j][state] = {}
         elif i == 3:#define the start state
             tm_machine["start_state"] = line
             tm_machine["current_state"] = line

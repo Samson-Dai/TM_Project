@@ -1,4 +1,6 @@
 
-rules = { “q0” :{“1”: {"state":"q0", "output": "1", "move":"R", "rule_num": 1 }, “0” : {“1”: {"state":"q0", "output": "1", "move":"R", "rule_num": 1 } }
-“q1” :{ “1” : {“1”: {"state":"q0", "output": "1", "move":"R", "rule_num": 1 }, “0” : {“1”: {"state":"q0", "output": "1", "move":"R", "rule_num": 1 } }
-} //a dictionaries in dictionary
+rules = [{
+“q0” :{“1”: {"state":"q0", "output": "1", "direction":"R", "rule_num": 1 }, “0” : {“1”: {"state":"q0", "output": "1", "direction":"R", "rule_num": 1 } }
+“q1” :{ “1” : {“1”: {"state":"q0", "output": "1", "direction":"R", "rule_num": 1 }, “0” : {“1”: {"state":"q0", "output": "1", "direction":"R", "rule_num": 1 }}
+}]
+//a dictionaries in dictionary
