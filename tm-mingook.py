@@ -8,10 +8,18 @@ def read_rules(line, rule_num):
     print("Rule " + str(rule_num)+": "+line)
     line_list = line.split(',')
     init_state = line_list[0]#first is the initial state
-    new_state = line_list[2]#new state after take in the symbol
-    input_symbol_str = line_list[1]#input symbol to determine which state to go to
-    new_symbol_str = line_list[3]
-    direction_str = line_list[4]
+    new_state = line_list[1 + tm_machine["tape_num"]]#new state after take in the symbol
+    input_symbol_list = []
+    new_symbol_list = []
+    direction_list = []
+    for i in range(tm_machine["tape_num"]):
+        input_symbol_list.append(line_list[1+i]) #input symbol to determine which state to go to
+        new_symbol_list.append(line_list[2+tm_machine["tape_num"]+i]) 
+        direction_list.append(line_list[2 + tm_machine["tape_num"]*2 + i])
+        #print("Loop " + str(i) + " input "+ str(input_symbol_list)+ " new symbols "+ str(new_symbol_list)+" direction_list "+ str(direction_list) )
+    input_symbol_str = ''.join(input_symbol_list)
+    new_symbol_str = ''.join(new_symbol_list)
+    direction_str = ''.join(direction_list)
     tm_machine["rules"][init_state][input_symbol_str]= {"new_state": new_state, "rule_num": rule_num, "output":new_symbol_str, "direction":direction_str }#finally, save this rule to a tm_machine with a new_state and rule_num
 
 def do_test(working_tapes):
@@ -93,7 +101,6 @@ def do_test(working_tapes):
         print("Tape " +str(i)+": "+ ''.join(working_tapes[i]))
 
     
-
 #different varibles(easily recognizable by their names, and nothing tricky)
 tm_machine = {
     "machine_name" : "",
