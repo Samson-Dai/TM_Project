@@ -22,6 +22,30 @@ def read_rules(line, rule_num):
     direction_str = ''.join(direction_list)
     tm_machine["rules"][init_state][input_symbol_str]= {"new_state": new_state, "rule_num": rule_num, "output":new_symbol_str, "direction":direction_str }#finally, save this rule to a tm_machine with a new_state and rule_num
 
+def checkwildcard(input_symbol_str, init_state):
+    global tm_machine
+    print("Checking wildcard")
+    matched = False
+    mactched_rule = ""
+    for rule_str in tm_machine["rules"][init_state]: # check every rule containing "*"
+        if "*" in list(rule_str):
+            found = True
+            for i in range(len(rule_str)):
+                if (list(rule_str)[i] != "*" and list(rule_str)[i] != input_symbol_str[i]):
+                    found = False
+                    print(rule_str + " doesn't match input " + input_symbol_str)
+            if found:
+                matched = True
+                mactched_rule = rule_str
+                print(mactched_rule + " Matches for input " + input_symbol_str)
+                break
+    if not matched:
+        return None
+    else:
+        return tm_machine["rules"][init_state][mactched_rule]
+        
+
+
 def do_test(working_tapes):
     global tm_machine
     halt = False  # set a bool for halt the machine
@@ -59,16 +83,20 @@ def do_test(working_tapes):
                     output_msg = "ERROR: Steps exceed the maximum."
                     break
                 else:
-                    #print("Add symbol " + working_tapes[i][tape_position[i]])
                     input_symbol_str = input_symbol_str + working_tapes[i][tape_position[i]]
 
-        #print("Input is " + input_symbol_str)
-        if (input_symbol_str not in tm_machine["rules"][init_state]): # no rule, reject 
-            halt = True
-            output_msg = "Rejected"
-            break
-            
-        result = tm_machine["rules"][current_state][input_symbol_str]
+        result = ""
+        if (input_symbol_str not in tm_machine["rules"][init_state]): # no rule, reject
+            result = checkwildcard(input_symbol_str, init_state)
+            if (result):
+                print("wildcard reult is : "+ str(result) )
+            else:
+                halt = True
+                output_msg = "Rejected"
+                break
+        else:
+            result= tm_machine["rules"][current_state][input_symbol_str]
+
         init_tape_position = tape_position
         #print("Result is " + str(result))
         #print("Current working_tapes: " + str(working_tapes))
