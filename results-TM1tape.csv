@@ -1,0 +1,161 @@
+Rule 1: q0,h,q0,H,R
+Rule 2: q0,H,q0,h,R
+Rule 3: q0,e,q0,E,R
+Rule 4: q0,E,q0,e,R
+Rule 5: q0,l,q0,L,R
+Rule 6: q0,L,q0,l,R
+Rule 7: q0,o,q0,O,R
+Rule 8: q0,O,q0,o,R
+Rule 9: q0,w,q0,W,R
+Rule 10: q0,W,q0,w,R
+Rule 11: q0,r,q0,R,R
+Rule 12: q0,R,q0,r,R
+Rule 13: q0,d,q0,D,R
+Rule 14: q0,D,q0,d,R
+Rule 15: q0,:,q0,:,R
+Rule 16: q0,>,q1,>,R
+Rule 17: q0,_,q2,_,R
+Rule 18: q1,h,q0,.,R
+Rule 19: q1,H,q0,.,R
+Rule 20: q1,e,q0,.,R
+Rule 21: q1,E,q0,.,R
+Rule 22: q1,l,q0,.,R
+Rule 23: q1,L,q0,.,R
+Rule 24: q1,o,q0,.,R
+Rule 25: q1,O,q0,.,R
+Rule 26: q1,w,q0,.,R
+Rule 27: q1,W,q0,.,R
+Rule 28: q1,r,q0,.,R
+Rule 29: q1,R,q0,.,R
+Rule 30: q1,d,q0,.,R
+Rule 31: q1,D,q0,.,R
+Rule 32: q1,:,q0,:,R
+Rule 33: q1,_,q2,_,R
+TM1tape.txt
+Tape 0: helloworld:HELLOWORLD:h_
+1,1,1,q0,h,q0,H,R
+2,3,2,q0,e,q0,E,R
+3,5,3,q0,l,q0,L,R
+4,5,4,q0,l,q0,L,R
+5,7,5,q0,o,q0,O,R
+6,9,6,q0,w,q0,W,R
+7,7,7,q0,o,q0,O,R
+8,11,8,q0,r,q0,R,R
+9,5,9,q0,l,q0,L,R
+10,13,10,q0,d,q0,D,R
+11,15,11,q0,:,q0,:,R
+12,2,12,q0,H,q0,h,R
+13,4,13,q0,E,q0,e,R
+14,6,14,q0,L,q0,l,R
+15,6,15,q0,L,q0,l,R
+16,8,16,q0,O,q0,o,R
+17,10,17,q0,W,q0,w,R
+18,8,18,q0,O,q0,o,R
+19,12,19,q0,R,q0,r,R
+20,6,20,q0,L,q0,l,R
+21,14,21,q0,D,q0,d,R
+22,15,22,q0,:,q0,:,R
+23,1,23,q0,h,q0,H,R
+24,17,24,q0,_,q2,_,R
+Accepted
+Tape 0: HELLOWORLD:helloworld:H_
+Tape 0: HELLO>world:hello>WORLD_
+1,2,1,q0,H,q0,h,R
+2,4,2,q0,E,q0,e,R
+3,6,3,q0,L,q0,l,R
+4,6,4,q0,L,q0,l,R
+5,8,5,q0,O,q0,o,R
+6,16,6,q0,>,q1,>,R
+7,26,7,q1,w,q0,.,R
+8,7,8,q0,o,q0,O,R
+9,11,9,q0,r,q0,R,R
+10,5,10,q0,l,q0,L,R
+11,13,11,q0,d,q0,D,R
+12,15,12,q0,:,q0,:,R
+13,1,13,q0,h,q0,H,R
+14,3,14,q0,e,q0,E,R
+15,5,15,q0,l,q0,L,R
+16,5,16,q0,l,q0,L,R
+17,7,17,q0,o,q0,O,R
+18,16,18,q0,>,q1,>,R
+19,27,19,q1,W,q0,.,R
+20,8,20,q0,O,q0,o,R
+21,12,21,q0,R,q0,r,R
+22,6,22,q0,L,q0,l,R
+23,14,23,q0,D,q0,d,R
+24,17,24,q0,_,q2,_,R
+Accepted
+Tape 0: hello>.ORLD:HELLO>.orld_
+Tape 0: worldhello:www>o:helloworl>d:hello_
+1,9,1,q0,w,q0,W,R
+2,7,2,q0,o,q0,O,R
+3,11,3,q0,r,q0,R,R
+4,5,4,q0,l,q0,L,R
+5,13,5,q0,d,q0,D,R
+6,1,6,q0,h,q0,H,R
+7,3,7,q0,e,q0,E,R
+8,5,8,q0,l,q0,L,R
+9,5,9,q0,l,q0,L,R
+10,7,10,q0,o,q0,O,R
+11,15,11,q0,:,q0,:,R
+12,9,12,q0,w,q0,W,R
+13,9,13,q0,w,q0,W,R
+14,9,14,q0,w,q0,W,R
+15,16,15,q0,>,q1,>,R
+16,24,16,q1,o,q0,.,R
+17,15,17,q0,:,q0,:,R
+18,1,18,q0,h,q0,H,R
+19,3,19,q0,e,q0,E,R
+20,5,20,q0,l,q0,L,R
+21,5,21,q0,l,q0,L,R
+22,7,22,q0,o,q0,O,R
+23,9,23,q0,w,q0,W,R
+24,7,24,q0,o,q0,O,R
+25,11,25,q0,r,q0,R,R
+26,5,26,q0,l,q0,L,R
+27,16,27,q0,>,q1,>,R
+28,30,28,q1,d,q0,.,R
+29,15,29,q0,:,q0,:,R
+30,1,30,q0,h,q0,H,R
+31,3,31,q0,e,q0,E,R
+32,5,32,q0,l,q0,L,R
+33,5,33,q0,l,q0,L,R
+34,7,34,q0,o,q0,O,R
+35,17,35,q0,_,q2,_,R
+Accepted
+Tape 0: WORLDHELLO:WWW>.:HELLOWORL>.:HELLO_
+Tape 0: helowrd:HELOWRD_
+1,1,1,q0,h,q0,H,R
+2,3,2,q0,e,q0,E,R
+3,5,3,q0,l,q0,L,R
+4,7,4,q0,o,q0,O,R
+5,9,5,q0,w,q0,W,R
+6,11,6,q0,r,q0,R,R
+7,13,7,q0,d,q0,D,R
+8,15,8,q0,:,q0,:,R
+9,2,9,q0,H,q0,h,R
+10,4,10,q0,E,q0,e,R
+11,6,11,q0,L,q0,l,R
+12,8,12,q0,O,q0,o,R
+13,10,13,q0,W,q0,w,R
+14,12,14,q0,R,q0,r,R
+15,14,15,q0,D,q0,d,R
+16,17,16,q0,_,q2,_,R
+Accepted
+Tape 0: HELOWRD:helowrd_
+Tape 0: >hhhhhhhhhhh_
+1,16,1,q0,>,q1,>,R
+2,18,2,q1,h,q0,.,R
+3,1,3,q0,h,q0,H,R
+4,1,4,q0,h,q0,H,R
+5,1,5,q0,h,q0,H,R
+6,1,6,q0,h,q0,H,R
+7,1,7,q0,h,q0,H,R
+8,1,8,q0,h,q0,H,R
+9,1,9,q0,h,q0,H,R
+10,1,10,q0,h,q0,H,R
+11,1,11,q0,h,q0,H,R
+12,1,12,q0,h,q0,H,R
+13,17,13,q0,_,q2,_,R
+Accepted
+Tape 0: >.HHHHHHHHHH_
