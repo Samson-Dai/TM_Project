@@ -24,7 +24,7 @@ def read_rules(line, rule_num):
 
 def checkwildcard(input_symbol_str, init_state):
     global tm_machine
-    print("Checking wildcard")
+
     matched = False
     mactched_rule = ""
     for rule_str in tm_machine["rules"][init_state]: # check every rule containing "*"
@@ -32,12 +32,10 @@ def checkwildcard(input_symbol_str, init_state):
             found = True
             for i in range(len(rule_str)):
                 if (list(rule_str)[i] != "*" and list(rule_str)[i] != input_symbol_str[i]):
-                    found = False
-                    print(rule_str + " doesn't match input " + input_symbol_str)
+                    found = False  # doesn't match, next rule
             if found:
                 matched = True
-                mactched_rule = rule_str
-                print(mactched_rule + " Matches for input " + input_symbol_str)
+                mactched_rule = rule_str # match, get correspoding output string
                 break
     if not matched:
         return None
@@ -205,4 +203,4 @@ except:
 finally:
     #print(tm_machine)
     tm.close()#finally close the tm which is opened the rule file
-    test.close()#close the test file
+    test.close()#close the tape file
